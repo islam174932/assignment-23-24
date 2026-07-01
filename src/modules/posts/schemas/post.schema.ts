@@ -1,0 +1,18 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
+
+export type PostDocument = Post & Document;
+
+@Schema({ timestamps: true })
+export class Post {
+  @Prop({ required: true, trim: true, maxlength: 500 })
+  content: string;
+
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  author: Types.ObjectId;
+
+  @Prop({ type: [Types.ObjectId], ref: 'User', default: [] })
+  likedBy: Types.ObjectId[];
+}
+
+export const PostSchema = SchemaFactory.createForClass(Post);
